@@ -128,7 +128,7 @@ class MyJavaSerializableActor extends Actor with scala.Serializable {
   def receive = {
     case "hello" ⇒
       count = count + 1
-      channel ! "world " + count
+      sender ! "world " + count
   }
 }
 
@@ -136,7 +136,7 @@ class MyStatelessActorWithMessagesInMailbox extends Actor with scala.Serializabl
   def receive = {
     case "hello" ⇒
       Thread.sleep(500)
-    case "hello-reply" ⇒ channel ! "world"
+    case "hello-reply" ⇒ sender ! "world"
   }
 }
 
@@ -144,7 +144,7 @@ class MyActorWithProtobufMessagesInMailbox extends Actor with scala.Serializable
   def receive = {
     case m: Message ⇒
       Thread.sleep(500)
-    case "hello-reply" ⇒ channel ! "world"
+    case "hello-reply" ⇒ sender ! "world"
   }
 }
 
@@ -152,6 +152,6 @@ class PersonActorWithMessagesInMailbox extends Actor with scala.Serializable {
   def receive = {
     case p: Person ⇒
       Thread.sleep(500)
-    case "hello-reply" ⇒ channel ! "hello"
+    case "hello-reply" ⇒ sender ! "hello"
   }
 }

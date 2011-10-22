@@ -155,18 +155,12 @@ class CallingThreadDispatcher(_app: AkkaApplication, val name: String = "calling
     val queue = mbox.queue
     val execute = mbox.suspendSwitch.fold {
       queue.push(handle)
-      if (warnings && handle.channel.isInstanceOf[Promise[_]]) {
-        app.eventHandler.warning(this, "suspendSwitch, creating Future could deadlock; target: %s" format receiver)
-      }
       false
     } {
       queue.push(handle)
-      if (queue.isActive) {
-        if (warnings && handle.channel.isInstanceOf[Promise[_]]) {
-          app.eventHandler.warning(this, "blocked on this thread, creating Future could deadlock; target: %s" format receiver)
-        }
+      if (queue.isActive)
         false
-      } else {
+      else {
         queue.enter
         true
       }
@@ -201,11 +195,6 @@ class CallingThreadDispatcher(_app: AkkaApplication, val name: String = "calling
       if (handle ne null) {
         try {
           mbox.actor.invoke(handle)
-          if (warnings) handle.channel match {
-            case f: ActorPromise if !f.isCompleted ⇒
-              app.eventHandler.warning(this, "calling %s with message %s did not reply as expected, might deadlock" format (mbox.actor, handle.message))
-            case _ ⇒
-          }
           true
         } catch {
           case e ⇒

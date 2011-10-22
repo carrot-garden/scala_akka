@@ -29,7 +29,7 @@ class PriorityDispatcherSpec extends AkkaSpec {
 
       def receive = {
         case i: Int  ⇒ acc = i :: acc
-        case 'Result ⇒ channel.tryTell(acc)
+        case 'Result ⇒ sender.tell(acc)
       }
     }).withDispatcher(dispatcher)).asInstanceOf[LocalActorRef]
 

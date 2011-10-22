@@ -8,17 +8,14 @@ import akka.AkkaException
 import akka.actor._
 import akka.event.EventHandler
 import akka.config.ConfigurationException
-import akka.actor.UntypedChannel._
-import akka.dispatch.Future
 import akka.util.ReflectiveAccess
 import akka.util.Duration
 
 import java.net.InetSocketAddress
 import java.lang.reflect.InvocationTargetException
-import java.util.concurrent.atomic.{ AtomicReference, AtomicInteger }
+import java.util.concurrent.atomic.{ AtomicReference }
 
 import scala.collection.immutable.Map
-import scala.collection.mutable
 import scala.annotation.tailrec
 
 /**
